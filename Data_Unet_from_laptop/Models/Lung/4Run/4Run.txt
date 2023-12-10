@@ -1,0 +1,4 @@
+PATH.append('C:/Users/Taran/Desktop/Ready_data/OP_NS/Png/')
+PATH.append('C:/Users/Taran/Desktop/Ready_data/OP_SS/Png/')
+PATH.append('C:/Users/Taran/Desktop/Ready_data/OP_15/Png/')
+PATH.append('C:/Users/Taran/Desktop/Ready_data/OP_NS_1800/Png/')
