@@ -1,0 +1,523 @@
+Model: "model"
+__________________________________________________________________________________________________
+ Layer (type)                Output Shape                 Param #   Connected to                  
+==================================================================================================
+ input_1 (InputLayer)        [(None, 128, 128, 1)]        0         []                            
+                                                                                                  
+ unet3plus_down0_0 (Conv2D)  (None, 128, 128, 16)         144       ['input_1[0][0]']             
+                                                                                                  
+ unet3plus_down0_0_bn (Batc  (None, 128, 128, 16)         64        ['unet3plus_down0_0[0][0]']   
+ hNormalization)                                                                                  
+                                                                                                  
+ unet3plus_down0_0_activati  (None, 128, 128, 16)         0         ['unet3plus_down0_0_bn[0][0]']
+ on (ReLU)                                                                                        
+                                                                                                  
+ unet3plus_down0_0_dropout   (None, 128, 128, 16)         0         ['unet3plus_down0_0_activation
+ (Dropout)                                                          [0][0]']                      
+                                                                                                  
+ unet3plus_down0_1 (Conv2D)  (None, 128, 128, 16)         2304      ['unet3plus_down0_0_dropout[0]
+                                                                    [0]']                         
+                                                                                                  
+ unet3plus_down0_1_bn (Batc  (None, 128, 128, 16)         64        ['unet3plus_down0_1[0][0]']   
+ hNormalization)                                                                                  
+                                                                                                  
+ unet3plus_down0_1_activati  (None, 128, 128, 16)         0         ['unet3plus_down0_1_bn[0][0]']
+ on (ReLU)                                                                                        
+                                                                                                  
+ unet3plus_down0_1_dropout   (None, 128, 128, 16)         0         ['unet3plus_down0_1_activation
+ (Dropout)                                                          [0][0]']                      
+                                                                                                  
+ unet3plus_down1_encode_max  (None, 64, 64, 16)           0         ['unet3plus_down0_1_dropout[0]
+ pool (MaxPooling2D)                                                [0]']                         
+                                                                                                  
+ unet3plus_down1_conv_0 (Co  (None, 64, 64, 32)           4608      ['unet3plus_down1_encode_maxpo
+ nv2D)                                                              ol[0][0]']                    
+                                                                                                  
+ unet3plus_down1_conv_0_bn   (None, 64, 64, 32)           128       ['unet3plus_down1_conv_0[0][0]
+ (BatchNormalization)                                               ']                            
+                                                                                                  
+ unet3plus_down1_conv_0_act  (None, 64, 64, 32)           0         ['unet3plus_down1_conv_0_bn[0]
+ ivation (ReLU)                                                     [0]']                         
+                                                                                                  
+ unet3plus_down1_conv_0_dro  (None, 64, 64, 32)           0         ['unet3plus_down1_conv_0_activ
+ pout (Dropout)                                                     ation[0][0]']                 
+                                                                                                  
+ unet3plus_down1_conv_1 (Co  (None, 64, 64, 32)           9216      ['unet3plus_down1_conv_0_dropo
+ nv2D)                                                              ut[0][0]']                    
+                                                                                                  
+ unet3plus_down1_conv_1_bn   (None, 64, 64, 32)           128       ['unet3plus_down1_conv_1[0][0]
+ (BatchNormalization)                                               ']                            
+                                                                                                  
+ unet3plus_down1_conv_1_act  (None, 64, 64, 32)           0         ['unet3plus_down1_conv_1_bn[0]
+ ivation (ReLU)                                                     [0]']                         
+                                                                                                  
+ unet3plus_down1_conv_1_dro  (None, 64, 64, 32)           0         ['unet3plus_down1_conv_1_activ
+ pout (Dropout)                                                     ation[0][0]']                 
+                                                                                                  
+ unet3plus_down2_encode_max  (None, 32, 32, 32)           0         ['unet3plus_down1_conv_1_dropo
+ pool (MaxPooling2D)                                                ut[0][0]']                    
+                                                                                                  
+ unet3plus_down2_conv_0 (Co  (None, 32, 32, 64)           18432     ['unet3plus_down2_encode_maxpo
+ nv2D)                                                              ol[0][0]']                    
+                                                                                                  
+ unet3plus_down2_conv_0_bn   (None, 32, 32, 64)           256       ['unet3plus_down2_conv_0[0][0]
+ (BatchNormalization)                                               ']                            
+                                                                                                  
+ unet3plus_down2_conv_0_act  (None, 32, 32, 64)           0         ['unet3plus_down2_conv_0_bn[0]
+ ivation (ReLU)                                                     [0]']                         
+                                                                                                  
+ unet3plus_down2_conv_0_dro  (None, 32, 32, 64)           0         ['unet3plus_down2_conv_0_activ
+ pout (Dropout)                                                     ation[0][0]']                 
+                                                                                                  
+ unet3plus_down2_conv_1 (Co  (None, 32, 32, 64)           36864     ['unet3plus_down2_conv_0_dropo
+ nv2D)                                                              ut[0][0]']                    
+                                                                                                  
+ unet3plus_down2_conv_1_bn   (None, 32, 32, 64)           256       ['unet3plus_down2_conv_1[0][0]
+ (BatchNormalization)                                               ']                            
+                                                                                                  
+ unet3plus_down2_conv_1_act  (None, 32, 32, 64)           0         ['unet3plus_down2_conv_1_bn[0]
+ ivation (ReLU)                                                     [0]']                         
+                                                                                                  
+ unet3plus_down2_conv_1_dro  (None, 32, 32, 64)           0         ['unet3plus_down2_conv_1_activ
+ pout (Dropout)                                                     ation[0][0]']                 
+                                                                                                  
+ unet3plus_down3_encode_max  (None, 16, 16, 64)           0         ['unet3plus_down2_conv_1_dropo
+ pool (MaxPooling2D)                                                ut[0][0]']                    
+                                                                                                  
+ unet3plus_down3_conv_0 (Co  (None, 16, 16, 128)          73728     ['unet3plus_down3_encode_maxpo
+ nv2D)                                                              ol[0][0]']                    
+                                                                                                  
+ unet3plus_down3_conv_0_bn   (None, 16, 16, 128)          512       ['unet3plus_down3_conv_0[0][0]
+ (BatchNormalization)                                               ']                            
+                                                                                                  
+ unet3plus_down3_conv_0_act  (None, 16, 16, 128)          0         ['unet3plus_down3_conv_0_bn[0]
+ ivation (ReLU)                                                     [0]']                         
+                                                                                                  
+ unet3plus_down3_conv_0_dro  (None, 16, 16, 128)          0         ['unet3plus_down3_conv_0_activ
+ pout (Dropout)                                                     ation[0][0]']                 
+                                                                                                  
+ unet3plus_down3_conv_1 (Co  (None, 16, 16, 128)          147456    ['unet3plus_down3_conv_0_dropo
+ nv2D)                                                              ut[0][0]']                    
+                                                                                                  
+ unet3plus_down3_conv_1_bn   (None, 16, 16, 128)          512       ['unet3plus_down3_conv_1[0][0]
+ (BatchNormalization)                                               ']                            
+                                                                                                  
+ unet3plus_down3_conv_1_act  (None, 16, 16, 128)          0         ['unet3plus_down3_conv_1_bn[0]
+ ivation (ReLU)                                                     [0]']                         
+                                                                                                  
+ unet3plus_down3_conv_1_dro  (None, 16, 16, 128)          0         ['unet3plus_down3_conv_1_activ
+ pout (Dropout)                                                     ation[0][0]']                 
+                                                                                                  
+ unet3plus_down4_encode_max  (None, 8, 8, 128)            0         ['unet3plus_down3_conv_1_dropo
+ pool (MaxPooling2D)                                                ut[0][0]']                    
+                                                                                                  
+ unet3plus_down4_conv_0 (Co  (None, 8, 8, 256)            294912    ['unet3plus_down4_encode_maxpo
+ nv2D)                                                              ol[0][0]']                    
+                                                                                                  
+ unet3plus_down4_conv_0_bn   (None, 8, 8, 256)            1024      ['unet3plus_down4_conv_0[0][0]
+ (BatchNormalization)                                               ']                            
+                                                                                                  
+ unet3plus_down4_conv_0_act  (None, 8, 8, 256)            0         ['unet3plus_down4_conv_0_bn[0]
+ ivation (ReLU)                                                     [0]']                         
+                                                                                                  
+ unet3plus_down4_conv_0_dro  (None, 8, 8, 256)            0         ['unet3plus_down4_conv_0_activ
+ pout (Dropout)                                                     ation[0][0]']                 
+                                                                                                  
+ unet3plus_down4_conv_1 (Co  (None, 8, 8, 256)            589824    ['unet3plus_down4_conv_0_dropo
+ nv2D)                                                              ut[0][0]']                    
+                                                                                                  
+ unet3plus_down4_conv_1_bn   (None, 8, 8, 256)            1024      ['unet3plus_down4_conv_1[0][0]
+ (BatchNormalization)                                               ']                            
+                                                                                                  
+ unet3plus_down4_conv_1_act  (None, 8, 8, 256)            0         ['unet3plus_down4_conv_1_bn[0]
+ ivation (ReLU)                                                     [0]']                         
+                                                                                                  
+ unet3plus_down4_conv_1_dro  (None, 8, 8, 256)            0         ['unet3plus_down4_conv_1_activ
+ pout (Dropout)                                                     ation[0][0]']                 
+                                                                                                  
+ unet3plus_up_0_en0_trans_c  (None, 16, 16, 16)           36880     ['unet3plus_down4_conv_1_dropo
+ onv (Conv2DTranspose)                                              ut[0][0]']                    
+                                                                                                  
+ unet3plus_up_0_en0_bn (Bat  (None, 16, 16, 16)           64        ['unet3plus_up_0_en0_trans_con
+ chNormalization)                                                   v[0][0]']                     
+                                                                                                  
+ unet3plus_up_0_en0_activat  (None, 16, 16, 16)           0         ['unet3plus_up_0_en0_bn[0][0]'
+ ion (ReLU)                                                         ]                             
+                                                                                                  
+ unet3plus_down_0_en2_maxpo  (None, 16, 16, 64)           0         ['unet3plus_down2_conv_1_dropo
+ ol (MaxPooling2D)                                                  ut[0][0]']                    
+                                                                                                  
+ unet3plus_down_0_en3_maxpo  (None, 16, 16, 32)           0         ['unet3plus_down1_conv_1_dropo
+ ol (MaxPooling2D)                                                  ut[0][0]']                    
+                                                                                                  
+ unet3plus_down_from0_to0_0  (None, 16, 16, 16)           2304      ['unet3plus_up_0_en0_activatio
+  (Conv2D)                                                          n[0][0]']                     
+                                                                                                  
+ unet3plus_down_from0_to1_0  (None, 16, 16, 16)           18432     ['unet3plus_down3_conv_1_dropo
+  (Conv2D)                                                          ut[0][0]']                    
+                                                                                                  
+ unet3plus_down_from0_to2_0  (None, 16, 16, 16)           9216      ['unet3plus_down_0_en2_maxpool
+  (Conv2D)                                                          [0][0]']                      
+                                                                                                  
+ unet3plus_down_from0_to3_0  (None, 16, 16, 16)           4608      ['unet3plus_down_0_en3_maxpool
+  (Conv2D)                                                          [0][0]']                      
+                                                                                                  
+ unet3plus_down_from0_to0_0  (None, 16, 16, 16)           64        ['unet3plus_down_from0_to0_0[0
+ _bn (BatchNormalization)                                           ][0]']                        
+                                                                                                  
+ unet3plus_down_from0_to1_0  (None, 16, 16, 16)           64        ['unet3plus_down_from0_to1_0[0
+ _bn (BatchNormalization)                                           ][0]']                        
+                                                                                                  
+ unet3plus_down_from0_to2_0  (None, 16, 16, 16)           64        ['unet3plus_down_from0_to2_0[0
+ _bn (BatchNormalization)                                           ][0]']                        
+                                                                                                  
+ unet3plus_down_from0_to3_0  (None, 16, 16, 16)           64        ['unet3plus_down_from0_to3_0[0
+ _bn (BatchNormalization)                                           ][0]']                        
+                                                                                                  
+ unet3plus_down_from0_to0_0  (None, 16, 16, 16)           0         ['unet3plus_down_from0_to0_0_b
+ _activation (ReLU)                                                 n[0][0]']                     
+                                                                                                  
+ unet3plus_down_from0_to1_0  (None, 16, 16, 16)           0         ['unet3plus_down_from0_to1_0_b
+ _activation (ReLU)                                                 n[0][0]']                     
+                                                                                                  
+ unet3plus_down_from0_to2_0  (None, 16, 16, 16)           0         ['unet3plus_down_from0_to2_0_b
+ _activation (ReLU)                                                 n[0][0]']                     
+                                                                                                  
+ unet3plus_down_from0_to3_0  (None, 16, 16, 16)           0         ['unet3plus_down_from0_to3_0_b
+ _activation (ReLU)                                                 n[0][0]']                     
+                                                                                                  
+ unet3plus_down_from0_to0_0  (None, 16, 16, 16)           0         ['unet3plus_down_from0_to0_0_a
+ _dropout (Dropout)                                                 ctivation[0][0]']             
+                                                                                                  
+ unet3plus_down_from0_to1_0  (None, 16, 16, 16)           0         ['unet3plus_down_from0_to1_0_a
+ _dropout (Dropout)                                                 ctivation[0][0]']             
+                                                                                                  
+ unet3plus_down_from0_to2_0  (None, 16, 16, 16)           0         ['unet3plus_down_from0_to2_0_a
+ _dropout (Dropout)                                                 ctivation[0][0]']             
+                                                                                                  
+ unet3plus_down_from0_to3_0  (None, 16, 16, 16)           0         ['unet3plus_down_from0_to3_0_a
+ _dropout (Dropout)                                                 ctivation[0][0]']             
+                                                                                                  
+ unet3plus_concat_0 (Concat  (None, 16, 16, 64)           0         ['unet3plus_down_from0_to0_0_d
+ enate)                                                             ropout[0][0]',                
+                                                                     'unet3plus_down_from0_to1_0_d
+                                                                    ropout[0][0]',                
+                                                                     'unet3plus_down_from0_to2_0_d
+                                                                    ropout[0][0]',                
+                                                                     'unet3plus_down_from0_to3_0_d
+                                                                    ropout[0][0]']                
+                                                                                                  
+ unet3plus_fusion_conv_0_0   (None, 16, 16, 80)           46080     ['unet3plus_concat_0[0][0]']  
+ (Conv2D)                                                                                         
+                                                                                                  
+ unet3plus_fusion_conv_0_0_  (None, 16, 16, 80)           320       ['unet3plus_fusion_conv_0_0[0]
+ bn (BatchNormalization)                                            [0]']                         
+                                                                                                  
+ unet3plus_fusion_conv_0_0_  (None, 16, 16, 80)           0         ['unet3plus_fusion_conv_0_0_bn
+ activation (ReLU)                                                  [0][0]']                      
+                                                                                                  
+ unet3plus_fusion_conv_0_0_  (None, 16, 16, 80)           0         ['unet3plus_fusion_conv_0_0_ac
+ dropout (Dropout)                                                  tivation[0][0]']              
+                                                                                                  
+ unet3plus_up_1_en0_trans_c  (None, 32, 32, 16)           36880     ['unet3plus_down4_conv_1_dropo
+ onv (Conv2DTranspose)                                              ut[0][0]']                    
+                                                                                                  
+ unet3plus_up_1_en1_trans_c  (None, 32, 32, 16)           11536     ['unet3plus_fusion_conv_0_0_dr
+ onv (Conv2DTranspose)                                              opout[0][0]']                 
+                                                                                                  
+ unet3plus_up_1_en0_bn (Bat  (None, 32, 32, 16)           64        ['unet3plus_up_1_en0_trans_con
+ chNormalization)                                                   v[0][0]']                     
+                                                                                                  
+ unet3plus_up_1_en1_bn (Bat  (None, 32, 32, 16)           64        ['unet3plus_up_1_en1_trans_con
+ chNormalization)                                                   v[0][0]']                     
+                                                                                                  
+ unet3plus_up_1_en0_activat  (None, 32, 32, 16)           0         ['unet3plus_up_1_en0_bn[0][0]'
+ ion (ReLU)                                                         ]                             
+                                                                                                  
+ unet3plus_up_1_en1_activat  (None, 32, 32, 16)           0         ['unet3plus_up_1_en1_bn[0][0]'
+ ion (ReLU)                                                         ]                             
+                                                                                                  
+ unet3plus_down_1_en3_maxpo  (None, 32, 32, 32)           0         ['unet3plus_down1_conv_1_dropo
+ ol (MaxPooling2D)                                                  ut[0][0]']                    
+                                                                                                  
+ unet3plus_down_from1_to0_0  (None, 32, 32, 16)           2304      ['unet3plus_up_1_en0_activatio
+  (Conv2D)                                                          n[0][0]']                     
+                                                                                                  
+ unet3plus_down_from1_to1_0  (None, 32, 32, 16)           2304      ['unet3plus_up_1_en1_activatio
+  (Conv2D)                                                          n[0][0]']                     
+                                                                                                  
+ unet3plus_down_from1_to2_0  (None, 32, 32, 16)           9216      ['unet3plus_down2_conv_1_dropo
+  (Conv2D)                                                          ut[0][0]']                    
+                                                                                                  
+ unet3plus_down_from1_to3_0  (None, 32, 32, 16)           4608      ['unet3plus_down_1_en3_maxpool
+  (Conv2D)                                                          [0][0]']                      
+                                                                                                  
+ unet3plus_down_from1_to0_0  (None, 32, 32, 16)           64        ['unet3plus_down_from1_to0_0[0
+ _bn (BatchNormalization)                                           ][0]']                        
+                                                                                                  
+ unet3plus_down_from1_to1_0  (None, 32, 32, 16)           64        ['unet3plus_down_from1_to1_0[0
+ _bn (BatchNormalization)                                           ][0]']                        
+                                                                                                  
+ unet3plus_down_from1_to2_0  (None, 32, 32, 16)           64        ['unet3plus_down_from1_to2_0[0
+ _bn (BatchNormalization)                                           ][0]']                        
+                                                                                                  
+ unet3plus_down_from1_to3_0  (None, 32, 32, 16)           64        ['unet3plus_down_from1_to3_0[0
+ _bn (BatchNormalization)                                           ][0]']                        
+                                                                                                  
+ unet3plus_down_from1_to0_0  (None, 32, 32, 16)           0         ['unet3plus_down_from1_to0_0_b
+ _activation (ReLU)                                                 n[0][0]']                     
+                                                                                                  
+ unet3plus_down_from1_to1_0  (None, 32, 32, 16)           0         ['unet3plus_down_from1_to1_0_b
+ _activation (ReLU)                                                 n[0][0]']                     
+                                                                                                  
+ unet3plus_down_from1_to2_0  (None, 32, 32, 16)           0         ['unet3plus_down_from1_to2_0_b
+ _activation (ReLU)                                                 n[0][0]']                     
+                                                                                                  
+ unet3plus_down_from1_to3_0  (None, 32, 32, 16)           0         ['unet3plus_down_from1_to3_0_b
+ _activation (ReLU)                                                 n[0][0]']                     
+                                                                                                  
+ unet3plus_down_from1_to0_0  (None, 32, 32, 16)           0         ['unet3plus_down_from1_to0_0_a
+ _dropout (Dropout)                                                 ctivation[0][0]']             
+                                                                                                  
+ unet3plus_down_from1_to1_0  (None, 32, 32, 16)           0         ['unet3plus_down_from1_to1_0_a
+ _dropout (Dropout)                                                 ctivation[0][0]']             
+                                                                                                  
+ unet3plus_down_from1_to2_0  (None, 32, 32, 16)           0         ['unet3plus_down_from1_to2_0_a
+ _dropout (Dropout)                                                 ctivation[0][0]']             
+                                                                                                  
+ unet3plus_down_from1_to3_0  (None, 32, 32, 16)           0         ['unet3plus_down_from1_to3_0_a
+ _dropout (Dropout)                                                 ctivation[0][0]']             
+                                                                                                  
+ unet3plus_concat_1 (Concat  (None, 32, 32, 64)           0         ['unet3plus_down_from1_to0_0_d
+ enate)                                                             ropout[0][0]',                
+                                                                     'unet3plus_down_from1_to1_0_d
+                                                                    ropout[0][0]',                
+                                                                     'unet3plus_down_from1_to2_0_d
+                                                                    ropout[0][0]',                
+                                                                     'unet3plus_down_from1_to3_0_d
+                                                                    ropout[0][0]']                
+                                                                                                  
+ unet3plus_fusion_conv_1_0   (None, 32, 32, 80)           46080     ['unet3plus_concat_1[0][0]']  
+ (Conv2D)                                                                                         
+                                                                                                  
+ unet3plus_fusion_conv_1_0_  (None, 32, 32, 80)           320       ['unet3plus_fusion_conv_1_0[0]
+ bn (BatchNormalization)                                            [0]']                         
+                                                                                                  
+ unet3plus_fusion_conv_1_0_  (None, 32, 32, 80)           0         ['unet3plus_fusion_conv_1_0_bn
+ activation (ReLU)                                                  [0][0]']                      
+                                                                                                  
+ unet3plus_fusion_conv_1_0_  (None, 32, 32, 80)           0         ['unet3plus_fusion_conv_1_0_ac
+ dropout (Dropout)                                                  tivation[0][0]']              
+                                                                                                  
+ unet3plus_up_2_en0_trans_c  (None, 64, 64, 16)           36880     ['unet3plus_down4_conv_1_dropo
+ onv (Conv2DTranspose)                                              ut[0][0]']                    
+                                                                                                  
+ unet3plus_up_2_en1_trans_c  (None, 64, 64, 16)           11536     ['unet3plus_fusion_conv_0_0_dr
+ onv (Conv2DTranspose)                                              opout[0][0]']                 
+                                                                                                  
+ unet3plus_up_2_en2_trans_c  (None, 64, 64, 16)           11536     ['unet3plus_fusion_conv_1_0_dr
+ onv (Conv2DTranspose)                                              opout[0][0]']                 
+                                                                                                  
+ unet3plus_up_2_en0_bn (Bat  (None, 64, 64, 16)           64        ['unet3plus_up_2_en0_trans_con
+ chNormalization)                                                   v[0][0]']                     
+                                                                                                  
+ unet3plus_up_2_en1_bn (Bat  (None, 64, 64, 16)           64        ['unet3plus_up_2_en1_trans_con
+ chNormalization)                                                   v[0][0]']                     
+                                                                                                  
+ unet3plus_up_2_en2_bn (Bat  (None, 64, 64, 16)           64        ['unet3plus_up_2_en2_trans_con
+ chNormalization)                                                   v[0][0]']                     
+                                                                                                  
+ unet3plus_up_2_en0_activat  (None, 64, 64, 16)           0         ['unet3plus_up_2_en0_bn[0][0]'
+ ion (ReLU)                                                         ]                             
+                                                                                                  
+ unet3plus_up_2_en1_activat  (None, 64, 64, 16)           0         ['unet3plus_up_2_en1_bn[0][0]'
+ ion (ReLU)                                                         ]                             
+                                                                                                  
+ unet3plus_up_2_en2_activat  (None, 64, 64, 16)           0         ['unet3plus_up_2_en2_bn[0][0]'
+ ion (ReLU)                                                         ]                             
+                                                                                                  
+ unet3plus_down_from2_to0_0  (None, 64, 64, 16)           2304      ['unet3plus_up_2_en0_activatio
+  (Conv2D)                                                          n[0][0]']                     
+                                                                                                  
+ unet3plus_down_from2_to1_0  (None, 64, 64, 16)           2304      ['unet3plus_up_2_en1_activatio
+  (Conv2D)                                                          n[0][0]']                     
+                                                                                                  
+ unet3plus_down_from2_to2_0  (None, 64, 64, 16)           2304      ['unet3plus_up_2_en2_activatio
+  (Conv2D)                                                          n[0][0]']                     
+                                                                                                  
+ unet3plus_down_from2_to3_0  (None, 64, 64, 16)           4608      ['unet3plus_down1_conv_1_dropo
+  (Conv2D)                                                          ut[0][0]']                    
+                                                                                                  
+ unet3plus_down_from2_to0_0  (None, 64, 64, 16)           64        ['unet3plus_down_from2_to0_0[0
+ _bn (BatchNormalization)                                           ][0]']                        
+                                                                                                  
+ unet3plus_down_from2_to1_0  (None, 64, 64, 16)           64        ['unet3plus_down_from2_to1_0[0
+ _bn (BatchNormalization)                                           ][0]']                        
+                                                                                                  
+ unet3plus_down_from2_to2_0  (None, 64, 64, 16)           64        ['unet3plus_down_from2_to2_0[0
+ _bn (BatchNormalization)                                           ][0]']                        
+                                                                                                  
+ unet3plus_down_from2_to3_0  (None, 64, 64, 16)           64        ['unet3plus_down_from2_to3_0[0
+ _bn (BatchNormalization)                                           ][0]']                        
+                                                                                                  
+ unet3plus_down_from2_to0_0  (None, 64, 64, 16)           0         ['unet3plus_down_from2_to0_0_b
+ _activation (ReLU)                                                 n[0][0]']                     
+                                                                                                  
+ unet3plus_down_from2_to1_0  (None, 64, 64, 16)           0         ['unet3plus_down_from2_to1_0_b
+ _activation (ReLU)                                                 n[0][0]']                     
+                                                                                                  
+ unet3plus_down_from2_to2_0  (None, 64, 64, 16)           0         ['unet3plus_down_from2_to2_0_b
+ _activation (ReLU)                                                 n[0][0]']                     
+                                                                                                  
+ unet3plus_down_from2_to3_0  (None, 64, 64, 16)           0         ['unet3plus_down_from2_to3_0_b
+ _activation (ReLU)                                                 n[0][0]']                     
+                                                                                                  
+ unet3plus_down_from2_to0_0  (None, 64, 64, 16)           0         ['unet3plus_down_from2_to0_0_a
+ _dropout (Dropout)                                                 ctivation[0][0]']             
+                                                                                                  
+ unet3plus_down_from2_to1_0  (None, 64, 64, 16)           0         ['unet3plus_down_from2_to1_0_a
+ _dropout (Dropout)                                                 ctivation[0][0]']             
+                                                                                                  
+ unet3plus_down_from2_to2_0  (None, 64, 64, 16)           0         ['unet3plus_down_from2_to2_0_a
+ _dropout (Dropout)                                                 ctivation[0][0]']             
+                                                                                                  
+ unet3plus_down_from2_to3_0  (None, 64, 64, 16)           0         ['unet3plus_down_from2_to3_0_a
+ _dropout (Dropout)                                                 ctivation[0][0]']             
+                                                                                                  
+ unet3plus_concat_2 (Concat  (None, 64, 64, 64)           0         ['unet3plus_down_from2_to0_0_d
+ enate)                                                             ropout[0][0]',                
+                                                                     'unet3plus_down_from2_to1_0_d
+                                                                    ropout[0][0]',                
+                                                                     'unet3plus_down_from2_to2_0_d
+                                                                    ropout[0][0]',                
+                                                                     'unet3plus_down_from2_to3_0_d
+                                                                    ropout[0][0]']                
+                                                                                                  
+ unet3plus_fusion_conv_2_0   (None, 64, 64, 80)           46080     ['unet3plus_concat_2[0][0]']  
+ (Conv2D)                                                                                         
+                                                                                                  
+ unet3plus_fusion_conv_2_0_  (None, 64, 64, 80)           320       ['unet3plus_fusion_conv_2_0[0]
+ bn (BatchNormalization)                                            [0]']                         
+                                                                                                  
+ unet3plus_fusion_conv_2_0_  (None, 64, 64, 80)           0         ['unet3plus_fusion_conv_2_0_bn
+ activation (ReLU)                                                  [0][0]']                      
+                                                                                                  
+ unet3plus_fusion_conv_2_0_  (None, 64, 64, 80)           0         ['unet3plus_fusion_conv_2_0_ac
+ dropout (Dropout)                                                  tivation[0][0]']              
+                                                                                                  
+ unet3plus_up_3_en0_trans_c  (None, 128, 128, 16)         36880     ['unet3plus_down4_conv_1_dropo
+ onv (Conv2DTranspose)                                              ut[0][0]']                    
+                                                                                                  
+ unet3plus_up_3_en1_trans_c  (None, 128, 128, 16)         11536     ['unet3plus_fusion_conv_0_0_dr
+ onv (Conv2DTranspose)                                              opout[0][0]']                 
+                                                                                                  
+ unet3plus_up_3_en2_trans_c  (None, 128, 128, 16)         11536     ['unet3plus_fusion_conv_1_0_dr
+ onv (Conv2DTranspose)                                              opout[0][0]']                 
+                                                                                                  
+ unet3plus_up_3_en3_trans_c  (None, 128, 128, 16)         11536     ['unet3plus_fusion_conv_2_0_dr
+ onv (Conv2DTranspose)                                              opout[0][0]']                 
+                                                                                                  
+ unet3plus_up_3_en0_bn (Bat  (None, 128, 128, 16)         64        ['unet3plus_up_3_en0_trans_con
+ chNormalization)                                                   v[0][0]']                     
+                                                                                                  
+ unet3plus_up_3_en1_bn (Bat  (None, 128, 128, 16)         64        ['unet3plus_up_3_en1_trans_con
+ chNormalization)                                                   v[0][0]']                     
+                                                                                                  
+ unet3plus_up_3_en2_bn (Bat  (None, 128, 128, 16)         64        ['unet3plus_up_3_en2_trans_con
+ chNormalization)                                                   v[0][0]']                     
+                                                                                                  
+ unet3plus_up_3_en3_bn (Bat  (None, 128, 128, 16)         64        ['unet3plus_up_3_en3_trans_con
+ chNormalization)                                                   v[0][0]']                     
+                                                                                                  
+ unet3plus_up_3_en0_activat  (None, 128, 128, 16)         0         ['unet3plus_up_3_en0_bn[0][0]'
+ ion (ReLU)                                                         ]                             
+                                                                                                  
+ unet3plus_up_3_en1_activat  (None, 128, 128, 16)         0         ['unet3plus_up_3_en1_bn[0][0]'
+ ion (ReLU)                                                         ]                             
+                                                                                                  
+ unet3plus_up_3_en2_activat  (None, 128, 128, 16)         0         ['unet3plus_up_3_en2_bn[0][0]'
+ ion (ReLU)                                                         ]                             
+                                                                                                  
+ unet3plus_up_3_en3_activat  (None, 128, 128, 16)         0         ['unet3plus_up_3_en3_bn[0][0]'
+ ion (ReLU)                                                         ]                             
+                                                                                                  
+ unet3plus_down_from3_to0_0  (None, 128, 128, 16)         2304      ['unet3plus_up_3_en0_activatio
+  (Conv2D)                                                          n[0][0]']                     
+                                                                                                  
+ unet3plus_down_from3_to1_0  (None, 128, 128, 16)         2304      ['unet3plus_up_3_en1_activatio
+  (Conv2D)                                                          n[0][0]']                     
+                                                                                                  
+ unet3plus_down_from3_to2_0  (None, 128, 128, 16)         2304      ['unet3plus_up_3_en2_activatio
+  (Conv2D)                                                          n[0][0]']                     
+                                                                                                  
+ unet3plus_down_from3_to3_0  (None, 128, 128, 16)         2304      ['unet3plus_up_3_en3_activatio
+  (Conv2D)                                                          n[0][0]']                     
+                                                                                                  
+ unet3plus_down_from3_to0_0  (None, 128, 128, 16)         64        ['unet3plus_down_from3_to0_0[0
+ _bn (BatchNormalization)                                           ][0]']                        
+                                                                                                  
+ unet3plus_down_from3_to1_0  (None, 128, 128, 16)         64        ['unet3plus_down_from3_to1_0[0
+ _bn (BatchNormalization)                                           ][0]']                        
+                                                                                                  
+ unet3plus_down_from3_to2_0  (None, 128, 128, 16)         64        ['unet3plus_down_from3_to2_0[0
+ _bn (BatchNormalization)                                           ][0]']                        
+                                                                                                  
+ unet3plus_down_from3_to3_0  (None, 128, 128, 16)         64        ['unet3plus_down_from3_to3_0[0
+ _bn (BatchNormalization)                                           ][0]']                        
+                                                                                                  
+ unet3plus_down_from3_to0_0  (None, 128, 128, 16)         0         ['unet3plus_down_from3_to0_0_b
+ _activation (ReLU)                                                 n[0][0]']                     
+                                                                                                  
+ unet3plus_down_from3_to1_0  (None, 128, 128, 16)         0         ['unet3plus_down_from3_to1_0_b
+ _activation (ReLU)                                                 n[0][0]']                     
+                                                                                                  
+ unet3plus_down_from3_to2_0  (None, 128, 128, 16)         0         ['unet3plus_down_from3_to2_0_b
+ _activation (ReLU)                                                 n[0][0]']                     
+                                                                                                  
+ unet3plus_down_from3_to3_0  (None, 128, 128, 16)         0         ['unet3plus_down_from3_to3_0_b
+ _activation (ReLU)                                                 n[0][0]']                     
+                                                                                                  
+ unet3plus_down_from3_to0_0  (None, 128, 128, 16)         0         ['unet3plus_down_from3_to0_0_a
+ _dropout (Dropout)                                                 ctivation[0][0]']             
+                                                                                                  
+ unet3plus_down_from3_to1_0  (None, 128, 128, 16)         0         ['unet3plus_down_from3_to1_0_a
+ _dropout (Dropout)                                                 ctivation[0][0]']             
+                                                                                                  
+ unet3plus_down_from3_to2_0  (None, 128, 128, 16)         0         ['unet3plus_down_from3_to2_0_a
+ _dropout (Dropout)                                                 ctivation[0][0]']             
+                                                                                                  
+ unet3plus_down_from3_to3_0  (None, 128, 128, 16)         0         ['unet3plus_down_from3_to3_0_a
+ _dropout (Dropout)                                                 ctivation[0][0]']             
+                                                                                                  
+ unet3plus_concat_3 (Concat  (None, 128, 128, 64)         0         ['unet3plus_down_from3_to0_0_d
+ enate)                                                             ropout[0][0]',                
+                                                                     'unet3plus_down_from3_to1_0_d
+                                                                    ropout[0][0]',                
+                                                                     'unet3plus_down_from3_to2_0_d
+                                                                    ropout[0][0]',                
+                                                                     'unet3plus_down_from3_to3_0_d
+                                                                    ropout[0][0]']                
+                                                                                                  
+ unet3plus_fusion_conv_3_0   (None, 128, 128, 80)         46080     ['unet3plus_concat_3[0][0]']  
+ (Conv2D)                                                                                         
+                                                                                                  
+ unet3plus_fusion_conv_3_0_  (None, 128, 128, 80)         320       ['unet3plus_fusion_conv_3_0[0]
+ bn (BatchNormalization)                                            [0]']                         
+                                                                                                  
+ unet3plus_fusion_conv_3_0_  (None, 128, 128, 80)         0         ['unet3plus_fusion_conv_3_0_bn
+ activation (ReLU)                                                  [0][0]']                      
+                                                                                                  
+ unet3plus_fusion_conv_3_0_  (None, 128, 128, 80)         0         ['unet3plus_fusion_conv_3_0_ac
+ dropout (Dropout)                                                  tivation[0][0]']              
+                                                                                                  
+ unet3plus_output_final (Co  (None, 128, 128, 1)          721       ['unet3plus_fusion_conv_3_0_dr
+ nv2D)                                                              opout[0][0]']                 
+                                                                                                  
+ unet3plus_output_final_act  (None, 128, 128, 1)          0         ['unet3plus_output_final[0][0]
+ ivation (Activation)                                               ']                            
+                                                                                                  
+==================================================================================================
+Total params: 1659905 (6.33 MB)
+Trainable params: 1656449 (6.32 MB)
+Non-trainable params: 3456 (13.50 KB)
+__________________________________________________________________________________________________
