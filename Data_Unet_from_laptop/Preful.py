@@ -11,7 +11,8 @@ from scipy.optimize import curve_fit
 import math 
 #import My_Preful_lib.My_Preful_lib as mp
 from os import listdir
-from os.path import isfile, join
+from os.path import isfile, join, dirname, basename
+
 import cv2
 #import imageio
 
@@ -35,7 +36,7 @@ model_path = ''
 parser = argparse.ArgumentParser()
 parser.add_argument("--path", help="enter path")
 parser.add_argument("--model", help="enter model")
-parser.add_argument("--Q_ROI", help="flag for manually selecting perfusion ROI")
+parser.add_argument("--Q_ROI", help="flag for manually selecting perfusion ROIП")
 #parser.add_argument("-v", "--verbose", action="store_true", help="increase output verbosity")
 args = parser.parse_args()
 if args.path:     
@@ -272,7 +273,7 @@ def Create_VR(img_ex, img_in, img_mid):
             if VR[i][j]>0:
                 sd += (VR[i][j] - VR_mean)**2
                 #VR[i][j] = 0
-    sd=sd/count_positive
+    sd=math.sqrt(sd/count_positive)
     #print('\nVR:', count_positive, '/', count_negative, '  ', count_coefficient)
     max = VR.max()
     min = VR.min()
@@ -387,7 +388,7 @@ lung_height = L_rect[:, 3]
 print('X_indeces = ', X_indeces)
 
 
-fig = plt.figure(figsize=(14, 2))
+fig = plt.figure(figsize=(14, 2), num='Lung height')
 #ax = plt.subplot()
 ax = plt.subplot(4, 1, (1, 3), label='lung_height')
 
@@ -707,7 +708,7 @@ for i in tqdm(range(len(lung_height_sorted))):
     #if lung_height_sorted[i] - sorted_fit[i] > 7:
         sorted_bad_indeces.append(i)
 print('sorted_bad_indeces found: ', len(sorted_bad_indeces))
-fig2 = plt.figure(figsize=(14, 2))
+fig2 = plt.figure(figsize=(14, 2), num='Lung height sorted')
 #ax = plt.subplot()
 ax2 = plt.subplot(4, 1, (1, 3), label='lung_height')
 plt.plot(new_indeces, lung_height_sorted, 'o-', linewidth=0.5, label='data', markersize=2, color='tab:blue', alpha=0.5)
@@ -717,7 +718,7 @@ for i in range(len(sorted_bad_indeces)):
 ax_phase2 = plt.subplot(4, 1, 4, label='Exhale', sharex=ax2)
 ax_phase2.set_ylabel('Phase')
 plt.plot(new_indeces, X_phase_sorted, 'o-', linewidth=0.5, label='data', markersize=2, color='tab:blue', alpha=0.5)
-
+plt.subplots_adjust(left=0.05, right=0.99, bottom=0.13)
 """
 if matplotlib_stop == 1:
     plt.show()
@@ -1095,9 +1096,13 @@ def Mouse_draw(event, x, y, flags, param):
 
 if args.Q_ROI:  
     drawing = 0 
+    X_sd_th = np.zeros((IMG_HEIGHT, IMG_WIDTH), np.uint8)
     cv2.namedWindow('X_mean_ROI_select', cv2.WINDOW_KEEPRATIO | cv2.WINDOW_GUI_NORMAL)
     cv2.imshow("X_mean_ROI_select", X_mean_8bit)
     cv2.setMouseCallback("X_mean_ROI_select", Mouse_draw)
+    cv2.imshow('X_sd_th', X_sd_th)
+    cv2.moveWindow('X_sd_th', 200, 800)
+    cv2.resizeWindow('X_mean_ROI_select', 600, 600)
     cv2.waitKey()
     #exit()
 
@@ -1199,6 +1204,7 @@ ax_phase3 = plt.subplot(4, 1, 4, label='Exhale', sharex=ax3)
 ax_phase3.set_ylabel('Phase')
 #plt.plot(X_indeces_for_perf, X_phase_sorted, 'o-', linewidth=0.5, label='data', markersize=2, color='tab:blue', alpha=0.5)
 
+plt.subplots_adjust(left=0.05, right=0.99, bottom=0.13)
 
 
 
@@ -1395,6 +1401,7 @@ def Segment_fit (fit_X, fit_Y, func, guess, chi_sqr_critical):
     #ax_phase.yaxis.set_major_locator(plt.MultipleLocator(np.pi / 2))
 
     plt.subplots_adjust(hspace=0)
+    plt.subplots_adjust(left=0.05, right=0.99, bottom=0.13)
     """
     if matplotlib_stop == 1:
         plt.show()
@@ -1467,6 +1474,7 @@ for i in range(len(perf_signal_sorted_bad_indeces)):
 ax_phase_perf_signal_sorted = plt.subplot(4, 1, 4, label='Exhale', sharex=ax_perf_signal_sorted)
 ax_phase_perf_signal_sorted.set_ylabel('Phase')
 plt.plot(new_indeces_for_perf, X_phase_for_perf_sorted, 'o-', linewidth=0.5, label='data', markersize=2, color='tab:blue', alpha=0.5)
+plt.subplots_adjust(left=0.05, right=0.99, bottom=0.13)
 
 new_indeces_for_perf = np.delete(new_indeces_for_perf, perf_signal_sorted_bad_indeces, 0)
 X_hipass_sorted = np.delete(X_hipass_sorted, perf_signal_sorted_bad_indeces, 0) #X
@@ -1484,6 +1492,9 @@ Sblood = perf_signal_sorted[0]
 
 
 #############WORK IN PROGRESS BEGIN##################
+T_slices = 0.0044*64#seconds
+T_slices = 0.0044*80#seconds
+T_slices = 0.0045*100#seconds
 T_slices = 0.0046*126#seconds
 tblood = 2*np.pi/X_freeq_for_perf_mean * T_slices
 print('tblood =', tblood, 'seconds; fblood =', 1/tblood, 'Hz =', 60/tblood, 'bpm')
@@ -1517,7 +1528,7 @@ def Create_Perf_map(Full_img, Empty_img):
             if Qmap[i][j]>0:
                 sd += (Qmap[i][j] - Qmap_mean)**2
                 #Qmap[i][j] = 0
-    sd=sd/count_positive
+    sd=math.sqrt(sd/count_positive)
     #print('\nQmap:', count_positive, '/', count_negative, '  ', count_coefficient)
     max = Qmap.max()
     min = Qmap.min()
@@ -1554,12 +1565,21 @@ def Create_interpolation(array):
     img_mid /= sum_c
     return img_min, img_max, img_mid
 
+def Mask(img, mask):
+    return cv2.bitwise_or(img, img, mask=mask)
+
 img_min_perf, img_max_perf, img_mid_perf = Create_interpolation(X_masked_for_perf)
 
 
 
 Qquant_max = Create_Qquant(img_max_perf, Sblood, tblood)
 Qquant_min = Create_Qquant(img_min_perf, Sblood, tblood)
+
+
+Qquant_max = Mask(Qquant_max, end_mask)
+Qquant_min = Mask(Qquant_min, end_mask)
+
+
 
 Qmap, Qmap_pos, Qmap_neg, Qmap_mean, Qmap_sd, Qmap_min, Qmap_max = Create_Perf_map(Qquant_max, Qquant_min)
 Qmap_8bit = Qmap.copy()
@@ -1665,6 +1685,24 @@ cv2.moveWindow('X_sd', 400, 1200)
 
 
 
+
+print(path)
+path = dirname(path)
+file_folder = basename(dirname(dirname(path))) + '/' + basename(dirname(path))
+Data_img_top = np.zeros((IMG_HEIGHT, IMG_WIDTH), np.uint8)
+Data_img_top = cv2.putText(Data_img_top, file_folder, (1,10), cv2.FONT_HERSHEY_SIMPLEX, 0.3, 255, 1, cv2.LINE_AA)
+Data_img_top = cv2.putText(Data_img_top, 'VR', (116,70), cv2.FONT_HERSHEY_SIMPLEX, 0.3, 255, 1, cv2.LINE_AA)
+
+Data_img_bottom = np.zeros((IMG_HEIGHT, IMG_WIDTH), np.uint8)
+Data_img_bottom = cv2.putText(Data_img_bottom, 'Qmap', (100,70), cv2.FONT_HERSHEY_SIMPLEX, 0.3, 255, 1, cv2.LINE_AA)
+
+Results_img_top = np.concatenate((Data_img_top, VR_img, Data_img), axis=1)
+Results_img_bottom = np.concatenate((Data_img_bottom, Qmap_8bit, QData_img), axis=1)
+Results_img = np.concatenate((Results_img_top, Results_img_bottom), axis=0)
+
+cv2.namedWindow('Results_img')
+cv2.imshow("Results_img", Results_img)
+cv2.moveWindow('Results_img', 1200, 1200)
 
 end_time = time.time()
 print('Execution time:', end_time - start_time, 's')

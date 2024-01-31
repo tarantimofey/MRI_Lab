@@ -12,6 +12,7 @@ import imageio
 
 import tensorflow as tf
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import jaccard_score
 import os
 import random
 from tqdm import tqdm
@@ -22,6 +23,13 @@ from pltable import PrettyTable
 from skimage.io import imread, imshow
 from skimage.transform import resize
 import time
+
+import keras_unet_collection
+from keras_unet_collection import models, base, utils
+
+
+
+
 start_time = time.time()
 print('Programm start, time:', start_time)
 
@@ -96,39 +104,37 @@ PATH.append('C:/Users/Taran/Desktop/Data_Unet/Data/Rat/BLEOM/CONTROL/21rat_bad/P
 
 
 
-"""
-PATH.append('K:\Data_Unet/Rat/Olya_26_07_23/CONTROL/1rat/Png')
-PATH.append('K:\Data_Unet/Rat/Olya_26_07_23/CONTROL/2rat/Png')
-PATH.append('K:\Data_Unet/Rat/Olya_26_07_23/CONTROL/3rat/Png')
-PATH.append('K:\Data_Unet/Rat/Olya_26_07_23/CONTROL/10rat/Png')
-PATH.append('K:\Data_Unet/Rat/Olya_26_07_23/CONTROL/11rat/Png')
-PATH.append('K:\Data_Unet/Rat/Olya_26_07_23/CONTROL/12rat/Png')
-PATH.append('K:\Data_Unet/Rat/Olya_26_07_23/CONTROL/15rat/Png')
-PATH.append('K:\Data_Unet/Rat/Olya_26_07_23/CONTROL/19rat/Png')
-PATH.append('K:\Data_Unet/Rat/Olya_26_07_23/CONTROL/20rat/Png')
-PATH.append('K:\Data_Unet/Rat/Olya_26_07_23/CONTROL/21rat/Png')
-"""
-PATH.append('K:\Data_Unet/Rat/Olya_26_07_23/BLEOMICINE/13rat/Png')
-PATH.append('K:\Data_Unet/Rat/Olya_26_07_23/BLEOMICINE/22rat/Png')
-PATH.append('K:\Data_Unet/Rat/Olya_26_07_23/BLEOMICINE/23rat/Png')
-PATH.append('K:\Data_Unet/Rat/Olya_26_07_23/BLEOMICINE/24rat/Png')
-PATH.append('K:\Data_Unet/Rat/Olya_26_07_23/BLEOMICINE/26rat/Png')
-PATH.append('K:\Data_Unet/Rat/Olya_26_07_23/BLEOMICINE/27rat/Png')
-PATH.append('K:\Data_Unet/Rat/Olya_26_07_23/BLEOMICINE/28rat/Png')
-PATH.append('K:\Data_Unet/Rat/Olya_26_07_23/BLEOMICINE/29rat/Png')
-PATH.append('K:\Data_Unet/Rat/Olya_26_07_23/BLEOMICINE/30rat/Png')
 
-PATH.append('K:\Data_Unet/Rat/Olya_26_07_23/TREATMENT/4rat/Png')
-PATH.append('K:\Data_Unet/Rat/Olya_26_07_23/TREATMENT/5rat/Png')
-PATH.append('K:\Data_Unet/Rat/Olya_26_07_23/TREATMENT/7rat/Png')
-PATH.append('K:\Data_Unet/Rat/Olya_26_07_23/TREATMENT/8rat/Png')
-PATH.append('K:\Data_Unet/Rat/Olya_26_07_23/TREATMENT/9rat/Png')
-PATH.append('K:\Data_Unet/Rat/Olya_26_07_23/TREATMENT/14rat/Png')
-PATH.append('K:\Data_Unet/Rat/Olya_26_07_23/TREATMENT/16rat/Png')
-PATH.append('K:\Data_Unet/Rat/Olya_26_07_23/TREATMENT/17rat/Png')
-PATH.append('K:\Data_Unet/Rat/Olya_26_07_23/TREATMENT/18rat/Png')
+PATH.append('/media/taran/SSD2/Data_Unet/Rat/Olya_26_07_23/CONTROL/1rat/Png')
+PATH.append('/media/taran/SSD2/Data_Unet/Rat/Olya_26_07_23/CONTROL/2rat/Png')
+PATH.append('/media/taran/SSD2/Data_Unet/Rat/Olya_26_07_23/CONTROL/3rat/Png')
+PATH.append('/media/taran/SSD2/Data_Unet/Rat/Olya_26_07_23/CONTROL/10rat/Png')
+PATH.append('/media/taran/SSD2/Data_Unet/Rat/Olya_26_07_23/CONTROL/11rat/Png')
+PATH.append('/media/taran/SSD2/Data_Unet/Rat/Olya_26_07_23/CONTROL/12rat/Png')
+PATH.append('/media/taran/SSD2/Data_Unet/Rat/Olya_26_07_23/CONTROL/15rat/Png')
+PATH.append('/media/taran/SSD2/Data_Unet/Rat/Olya_26_07_23/CONTROL/19rat/Png')
+PATH.append('/media/taran/SSD2/Data_Unet/Rat/Olya_26_07_23/CONTROL/20rat/Png')
+PATH.append('/media/taran/SSD2/Data_Unet/Rat/Olya_26_07_23/CONTROL/21rat/Png')
 
+PATH.append('/media/taran/SSD2/Data_Unet/Rat/Olya_26_07_23/BLEOMICINE/13rat/Png')
+PATH.append('/media/taran/SSD2/Data_Unet/Rat/Olya_26_07_23/BLEOMICINE/22rat/Png')
+PATH.append('/media/taran/SSD2/Data_Unet/Rat/Olya_26_07_23/BLEOMICINE/23rat/Png')
+PATH.append('/media/taran/SSD2/Data_Unet/Rat/Olya_26_07_23/BLEOMICINE/24rat/Png')
+PATH.append('/media/taran/SSD2/Data_Unet/Rat/Olya_26_07_23/BLEOMICINE/26rat/Png')
+PATH.append('/media/taran/SSD2/Data_Unet/Rat/Olya_26_07_23/BLEOMICINE/27rat/Png')
+PATH.append('/media/taran/SSD2/Data_Unet/Rat/Olya_26_07_23/BLEOMICINE/28rat/Png')
+PATH.append('/media/taran/SSD2/Data_Unet/Rat/Olya_26_07_23/BLEOMICINE/29rat/Png')
+PATH.append('/media/taran/SSD2/Data_Unet/Rat/Olya_26_07_23/BLEOMICINE/30rat/Png')
 
+PATH.append('/media/taran/SSD2/Data_Unet/Rat/Olya_26_07_23/TREATMENT/4rat/Png')
+PATH.append('/media/taran/SSD2/Data_Unet/Rat/Olya_26_07_23/TREATMENT/5rat/Png')
+PATH.append('/media/taran/SSD2/Data_Unet/Rat/Olya_26_07_23/TREATMENT/7rat/Png')
+PATH.append('/media/taran/SSD2/Data_Unet/Rat/Olya_26_07_23/TREATMENT/8rat/Png')
+PATH.append('/media/taran/SSD2/Data_Unet/Rat/Olya_26_07_23/TREATMENT/9rat/Png')
+PATH.append('/media/taran/SSD2/Data_Unet/Rat/Olya_26_07_23/TREATMENT/14rat/Png')
+PATH.append('/media/taran/SSD2/Data_Unet/Rat/Olya_26_07_23/TREATMENT/16rat/Png')
+PATH.append('/media/taran/SSD2/Data_Unet/Rat/Olya_26_07_23/TREATMENT/17rat/Png')
+PATH.append('/media/taran/SSD2/Data_Unet/Rat/Olya_26_07_23/TREATMENT/18rat/Png')
 
 
 
@@ -137,27 +143,33 @@ PATH.append('K:\Data_Unet/Rat/Olya_26_07_23/TREATMENT/18rat/Png')
 
 
 
-model_path = 'C:/Users/Taran/Desktop/Data_Unet/Models/Olya_26_07_23/PAT/'
+
+
+model_path = '/media/taran/SSD2/Data_Unet_from_laptop/Rat_Unet_article_2023/Trained_models/unet3plus/LUNG-1Run/'
 #model_path = 'C:/Users/Taran/Desktop/Data_Unet/Models/mct/edema/1Run/'
 #model_file = model_path + 'MRI_lung'
-model_file = model_path + 'Pat'
+model_file = model_path + 'LUNG'
 
 
 image_folder = '/EXP_DATA/'
 #mask_folder = '/Mask_edema/'
-mask_folder = '/MASK_PAT/'
+mask_folder = '/MASK_EXP/'
 
-folder_2_flag = 0
+folder_2_flag = 1
 image_folder_2 = '/INSP_DATA/'
 mask_folder_2 = '/MASK_INSP/'
+
+
+augmetations_coeff = 3
+n_of_epochs = 200
 
 check_folders_flag = 0
 test_split_coeff = 0.02
 
-model_type = 2
+model_type = 0
 batch_size = 32
 
-
+save_test_images_flag = 1
 
 
 
@@ -187,7 +199,10 @@ def scheduler(epoch, lr):
 
 if model_type == 0:
     #model = tf.keras.models.load_model('C:/Users/Taran/Desktop/Data_Unet/MRI_lung_0.h5')
-    model = tf.keras.models.load_model('C:/Users/Taran/Desktop/Data_Unet/Models/2Run/MRI_lung_SS_15.h5')
+    #model = tf.keras.models.load_model('/media/taran/SSD2/Data_Unet_from_laptop/Rat_Unet_article_2023/unet3plus.h5')
+    model = keras_unet_collection.models.unet_3plus_2d((128,128,1),1,[32, 64,128,256,512], weights=None)
+    model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+    
 if model_type == 1:
     inputs = tf.keras.layers.Input((IMG_HEIGHT, IMG_WIDTH, IMG_CHANNELS))
     s = tf.keras.layers.Lambda(lambda x: x/1.0)(inputs)
@@ -385,7 +400,73 @@ if model_type == 3:
 
 ###################################################################################
 
+def elastic_transform(image, alpha, sigma, alpha_affine, random_state=None):
+    """Elastic deformation of images as described in [Simard2003]_ (with modifications).
+    .. [Simard2003] Simard, Steinkraus and Platt, "Best Practices for
+         Convolutional Neural Networks applied to Visual Document Analysis", in
+         Proc. of the International Conference on Document Analysis and
+         Recognition, 2003.
 
+     Based on https://gist.github.com/erniejunior/601cdf56d2b424757de5
+    """
+    if random_state is None:
+        random_state = np.random.RandomState(None)
+
+    shape = image.shape
+    shape_size = shape[:2]
+
+    # Random affine
+    center_square = np.float32(shape_size) // 2
+    square_size = min(shape_size) // 3
+    pts1 = np.float32(
+        [
+            center_square + square_size,
+            [center_square[0] + square_size, center_square[1] - square_size],
+            center_square - square_size,
+        ]
+    )
+    pts2 = pts1 + random_state.uniform(
+        -alpha_affine, alpha_affine, size=pts1.shape
+    ).astype(np.float32)
+    M = cv2.getAffineTransform(pts1, pts2)
+    image = cv2.warpAffine(
+        image, M, shape_size[::-1], borderMode=cv2.BORDER_REFLECT_101
+    )
+
+    dx = scipy.ndimage.gaussian_filter((random_state.rand(*shape) * 2 - 1), sigma) * alpha
+    dy = scipy.ndimage.gaussian_filter((random_state.rand(*shape) * 2 - 1), sigma) * alpha
+
+    x, y, z = np.meshgrid(np.arange(shape[1]), np.arange(shape[0]), np.arange(shape[2]))
+    indices = (
+        np.reshape(y + dy, (-1, 1)),
+        np.reshape(x + dx, (-1, 1)),
+        np.reshape(z, (-1, 1)),
+    )
+
+    return scipy.ndimage.map_coordinates(
+        image, indices, order=1, mode="reflect"
+    ).reshape(shape)
+
+
+
+def rotate_and_scale(image, angle, scale_factor, random_state=None):
+    if random_state is None:
+        random_state = np.random.RandomState(None)
+    rand_angle = random_state.triangular(-angle, 0, angle)
+    rand_scale = random_state.triangular(1-scale_factor, 1, 1+scale_factor)
+    #print('rand_angle =', rand_angle, '; rand_scale =', rand_scale)
+
+    # get image height, width
+    (h, w) = image[0].shape[:2]
+    # calculate the center of the image
+    center = (w / 2, h / 2)
+
+    M = cv2.getRotationMatrix2D(center, rand_angle, rand_scale)
+    out = []
+    for img in image:
+        rotated = cv2.warpAffine(img, M, (h, w), borderMode=cv2.BORDER_REFLECT_101)
+        out.append(rotated)
+    return out
 
 """
 def Show_images(n):
@@ -488,6 +569,7 @@ def Show_images(n):
     cv2.imshow("Img+mask_ground", superimposed_ground)
     
     print('\nDice_coeff = ', Dice_coeff(Y_img, Y_img_ground))
+    print('\nIoU_coeff = ', jaccard_score(Y_img, Y_img_ground, average='micro', zero_division=0))
 
 
 def Superimpose(img1, img2):
@@ -601,7 +683,8 @@ if folder_2_flag == 1:
 print('Done!\n')
 X = np.asarray(X)
 Y = np.asarray(Y)
-print(str(len(X)) + ' images were found\n')
+dataset_len = len(X)
+print(str(dataset_len) + ' images were found\n')
 
 """
 with open('K:/X_data.txt', 'wb') as f:
@@ -613,7 +696,43 @@ with open('K:/Y_data.txt', 'wb') as f:
 if check_folders_flag == 1:
     raise SystemExit
 
-X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=test_split_coeff, random_state=1, shuffle='True')
+if augmetations_coeff != 0:
+    print('Augmenting data...')
+    import scipy
+    X_augmented = []
+    Y_augmented = []
+    for i in tqdm(range(int(dataset_len*(augmetations_coeff-1)))):
+        i = i%dataset_len
+        X_img = X[i][:, :, 0]
+        Y_img = Y[i][:, :, 0]
+        im_merge = np.concatenate((X_img[..., None], Y_img[..., None]), axis=2)
+        im_merge_t = elastic_transform(
+            im_merge,
+            im_merge.shape[1] * 0.5,
+            im_merge.shape[1] * 0.09,
+            im_merge.shape[1] * 0,
+        )  # soft transform        
+        
+        test_img_t = im_merge_t[..., 0]
+        test_mask_t = im_merge_t[..., 1]
+        test_img_t, test_mask_t = rotate_and_scale([test_img_t, test_mask_t], 3, 0.1)
+                
+        test_mask_t[test_mask_t<0.5] = 0
+        test_mask_t[test_mask_t>=0.5] = 1
+        X_augmented.append(test_img_t[..., np.newaxis])
+        Y_augmented.append(test_mask_t[..., np.newaxis])
+    X = np.concatenate((X, X_augmented), axis=0)
+    Y = np.concatenate((Y, Y_augmented), axis=0)
+    print('Done!\n')
+    print('n of augmented images:', len(X)-dataset_len, '; dataset_len =', len(X)/dataset_len, '\bx')
+
+
+
+
+
+
+
+X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=test_split_coeff, random_state=1, shuffle=True)
 print(str(len(X_train)) + ' images selected for training (' + str(test_split_coeff*100) + '%)\n\n')
 Y_ground = Y_test.copy()
 checkpointer = tf.keras.callbacks.ModelCheckpoint(model_file+'.h5', verbose=1, save_best_only='True')
@@ -623,10 +742,15 @@ callbacks = [
     #tf.keras.callbacks.LearningRateScheduler(scheduler)
 ]
 
+train_begin_time = time.time()
+
 print('Fitting model...')
 #with tf.device('/GPU:1'):
-results = model.fit(X_train,Y_train, validation_split=0.1, batch_size=batch_size, epochs=100, callbacks=[callbacks, checkpointer])
+results = model.fit(X_train,Y_train, validation_split=0.1, batch_size=batch_size, epochs=n_of_epochs, callbacks=[callbacks, checkpointer])
 print('Done!\n')
+
+
+train_end_time = time.time()
 
 print('Fitting test data...')
 Y_test = model.predict(X_test, verbose=1)
@@ -646,9 +770,36 @@ for i in range(len(Y_test)):
 dice_table = np.asarray(dice_table)
 print('Dice_coefficient:\nmean = ', dice_table.mean(), '\nmax = ', dice_table.max(), '\nmin = ', dice_table.min(), '\n\n')
 
+IoU_table = []
+for i in range(len(Y_test)):
+    Y_img = Y_test[i][:, :, 0].astype(np.uint8)
+    Y_img_ground = Y_ground[i]
+    Y_img = cv2.normalize(Y_img, None, 0, 1, cv2.NORM_MINMAX, cv2.CV_8U)
+    Y_img_ground = cv2.normalize(Y_img_ground, None, 0, 1, cv2.NORM_MINMAX, cv2.CV_8U)
+    IoU = jaccard_score(Y_img_ground, Y_img, average='micro', zero_division=0)
+    IoU_table.append(IoU)
+IoU_table = np.asarray(IoU_table)
+print('IoU_coefficient:\nmean = ', IoU_table.mean(), '\nmax = ', IoU_table.max(), '\nmin = ', IoU_table.min(), '\n\n')
+
+
+if save_test_images_flag == 1:
+    if not os.path.exists(model_path+'/test_images'):
+        os.makedirs(model_path+'/test_images/X')
+        os.makedirs(model_path+'/test_images/Y')
+        os.makedirs(model_path+'/test_images/Y_ground')
+    for i in range(len(Y_test)):
+        cv2.imwrite(model_path+'/test_images/X/' + 'test_img_' + str(i) + '.png', cv2.normalize(X_test[i][:,:,0].astype(np.uint8), None, 0, 255, cv2.NORM_MINMAX, cv2.CV_8U))
+        cv2.imwrite(model_path+'/test_images/Y/' + 'test_img_' + str(i) + '.png', cv2.normalize(Y_test[i][:,:,0].astype(np.uint8), None, 0, 255, cv2.NORM_MINMAX, cv2.CV_8U))
+        cv2.imwrite(model_path+'/test_images/Y_ground/' + 'test_img_' + str(i) + '.png', cv2.normalize(Y_ground[i][:,:,0].astype(np.uint8), None, 0, 255, cv2.NORM_MINMAX, cv2.CV_8U))
+
+
+
 
 end_time = time.time()
-print('Execution time:', end_time - start_time, 's')
+execution_time = end_time - start_time
+train_time = train_end_time - train_begin_time
+print('Execution time:', execution_time, 's = ', execution_time/60, 'min')
+print('Train time:', train_time, 's = ', train_time/60, 'min')
 
 
 #Path_table.field_names = ['N folder', 'floder name', 'N of images']
@@ -665,12 +816,14 @@ for i in range(len(PATH)):
     Path_table.field_names = ['N folder', 'folder name', 'N of images']
     Path_table.add_row([1, image_folder + '<--->' + mask_folder, str(len(image_ids[i]))])
     #txt_file.writelines('\nfolder_1: ' + image_folder + '<--->' + mask_folder + '; N_images: ' + str(len(image_ids[i])))
-    if folder_2_flag == 1:
-        #txt_file.writelines('\nfolder_2: ' + image_folder_2 + '<--->' + mask_folder_2 + '; N_images: ' + str(len(image_ids_2[i])))
-        Path_table.add_row([2, image_folder_2 + '<--->' + mask_folder_2, str(len(image_ids_2[i]))])
     #txt_file.writelines(Path_table.get_string())
     txt_file.writelines(str(Path_table))
     txt_file.writelines('\n\n')
+if augmetations_coeff == 0:
+    txt_file.writelines('No augmentations were performed')
+else:
+    txt_file.writelines('N of images in dataset: ' + str(dataset_len) + '\n')    
+    txt_file.writelines('N of augmented images: ' + str(len(X)-dataset_len) + '; dataset_len = ' + str(round(len(X)/dataset_len, 4)) + 'x\n')
 txt_file.writelines('Total N of images: ' + str(len(X)) + '\n')
 txt_file.writelines('N of train images: ' + str(len(X_train)) + '\n')
 txt_file.writelines('N of test images: ' + str(len(X_test)) + '\n\n')
@@ -685,7 +838,10 @@ txt_file.writelines('\nval_loss: ' + str(results.history['val_loss'][-1]))
 txt_file.writelines('\n\n-----------------------------------------------------------------')   
 txt_file.writelines('\nDice_coefficient:\nmean = ' + str(dice_table.mean()) + '\nmax = ' + str(dice_table.max()) + '\nmin = ' + str(dice_table.min())) 
 txt_file.writelines('\n\n-----------------------------------------------------------------')   
-txt_file.writelines('\nExecution time: ' + str(round((end_time - start_time), 5)) + 's')  
+txt_file.writelines('\nIoU_coefficient:\nmean = ' + str(IoU_table.mean()) + '\nmax = ' + str(IoU_table.max()) + '\nmin = ' + str(IoU_table.min())) 
+txt_file.writelines('\n\n-----------------------------------------------------------------')   
+txt_file.writelines('\nExecution time: ' + str(round((execution_time), 2)) + 's = ' + str(round((execution_time/60), 2)) + 'min')  
+txt_file.writelines('\nTrain time: ' + str(round((train_time), 2)) + 's = ' + str(round((train_time/60), 2)) + 'min')  
 txt_file.writelines('\n\n-----------------------------------------------------------------')
 txt_file.close()
 
@@ -696,6 +852,9 @@ with open(model_file+'_summary.txt', 'w') as fh:
 with open(model_file+'_dice.txt', 'w') as f:
     for i in range(len(dice_table)):
         f.writelines(str(dice_table[i]) + ', ')
+with open(model_file+'_IoU.txt', 'w') as f:
+    for i in range(len(IoU_table)):
+        f.writelines(str(IoU_table[i]) + ', ')
 
 metrics_file = open(model_file+'_metrics.txt', 'w')
 metrics_file.writelines('accuracy = ' + str(results.history['accuracy']))    
@@ -737,22 +896,31 @@ plt.show(block=False)
 current_img = 0
 Show_images(current_img)
 
+
+cv2.moveWindow('X', 1, 0)
+cv2.moveWindow('Y', 400, 0)
+cv2.moveWindow('Y_ground', 800, 0)
+
+cv2.moveWindow('Img+mask', 400, 400)
+
+cv2.moveWindow('Img+mask_ground', 800, 400)
+
+
 img_len = len(X_test)
 while(1):
     full_key_code = cv2.waitKeyEx(0)
-    if full_key_code == 2555904:
+    if full_key_code == 65363:
         current_img += 1
         if current_img >= img_len:
             current_img = img_len-1
-        Show_images(current_img)
         print('image ' + str(current_img) + ' / ' + str(img_len))
-    if full_key_code == 2424832:
+        Show_images(current_img)
+    if full_key_code == 65361:
         current_img -= 1        
         if current_img < 0:
             current_img = 0
-        Show_images(current_img)
         print('image ' + str(current_img) + ' / ' + str(img_len))
-    if full_key_code == 32:
-        cv2.imwrite('C:/Users/Taran/Desktop/' + 'Img' + str(n) + '.png', superimposed)
-        print('image ' + str(current_img) + ' saved!')
+        Show_images(current_img)
+    if full_key_code == 27:
+            exit()
         
